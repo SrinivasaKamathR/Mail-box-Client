@@ -1,0 +1,20 @@
+.h1 {
+    width: 50%;
+    margin: auto;
+    margin-top: 150px;
+    font-family: cursive;
+    text-align: center;
+  }
+  
+  .h1 span {
+    width: fit-content;
+    margin: auto;
+    display: block;
+    font-size: 50px;
+    color: #00b7a8;
+    margin-top: 20px;
+    border: 2px solid black;
+    padding: 10px 30px 10px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px black;
+  }

@@ -10,6 +10,12 @@ const MainNavigation = () => {
         <ul>
           <li>
             <NavLink
+              to="/home"
+              className={({ isActive }) => (isActive ? classes.active : "")}
+            >
+              Home
+            </NavLink>
+            <NavLink
               to="/login"
               className={({ isActive }) => (isActive ? classes.active : "")}
             >

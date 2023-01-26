@@ -11,6 +11,14 @@
     border-radius: 5px;
     box-shadow: 0 0 10px black;
   }
+
+  .form .title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 40px;
+    font-weight: bold;
+  }
+  
   
   .form input {
     display: block;
@@ -29,6 +37,7 @@
     width: 60%;
     padding: 8px 0 8px 0;
     border-radius: 25px;
+    font-size: 18px;
   }
   
   .hasAccount {
