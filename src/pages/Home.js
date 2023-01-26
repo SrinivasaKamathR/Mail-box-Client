@@ -1,80 +1,20 @@
-import React, { useState, useRef } from "react";
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from "draft-js";
+import React from "react";
+import { useSelector } from "react-redux";
 
-import classes from "./Home.module.css";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { json } from "react-router-dom";
+//// import classes from './Home.module.css'
+import Sidebar from "../components/Sidebar";
+import Compose from "../components/Compose";
+import Sent from "../components/Sent";
+import Received from "../components/Received";
 
 const Home = () => {
-  const emailRef = useRef();
-  const titleRef = useRef();
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-
-  const handleEditorChange = (editorState) => {
-    setEditorState(editorState);
-    // console.log(editorState.getCurrentContent().getPlainText());
-  };
-
-  const sendMailHandler = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await fetch(
-        "https://mail-box-client-database-default-rtdb.firebaseio.com/mails.json",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            to: emailRef.current.value,
-            from: JSON.parse(localStorage.getItem("idToken")).email,
-            title: titleRef.current.value,
-            text: editorState.getCurrentContent().getPlainText(),
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log(data);
-      } else {
-        throw data.error;
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
+  const state = useSelector((state) => state.show);
   return (
     <React.Fragment>
-      <h1 className={classes.h1}>
-        Welcome to your<span>Mail Box</span>
-      </h1>
-      <form className={classes.form} onSubmit={sendMailHandler}>
-        <div className={classes.to}>
-          <label>To : </label>
-          <input type="email" ref={emailRef} required />
-        </div>
-        <div className={classes.title}>
-          <label>Title : </label>
-          <input type="text" ref={titleRef} required />
-        </div>
-        <Editor
-          editorState={editorState}
-          onEditorStateChange={handleEditorChange}
-          wrapperClassName={classes["wrapper-class"]}
-          editorClassName={classes["editor-class"]}
-          toolbarClassName={classes["toolbar-class"]}
-        />
-        <div className={classes.button}>
-          <button type="submit">Send</button>
-        </div>
-      </form>
+      <Sidebar />
+      {state.compose && <Compose />}
+      {state.sent && <Sent />}
+      {state.received && <Received />}
     </React.Fragment>
   );
 };

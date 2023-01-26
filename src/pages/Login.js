@@ -1,13 +1,17 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import classes from "./Login.module.css";
+import { authActions } from "../store/auth-slice";
+import { mailActions } from "../store/mail-slice";
 
 const Login = () => {
   const [hasAccount, setHasAccount] = useState(true);
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const hasAccountHandler = () => {
@@ -51,6 +55,8 @@ const Login = () => {
 
       if (respense.ok) {
         localStorage.setItem("idToken", JSON.stringify(data));
+        dispatch(authActions.login());
+        dispatch(mailActions.firstTime(true));
         navigate("/home");
       } else {
         throw data.error;
