@@ -17,7 +17,7 @@ const MailData = (props) => {
       const email = props.mail.to.replace("@", "").replace(".", "");
       try {
         const response = await fetch(
-          `https://mail-box-client-88922-default-rtdb.firebaseio.com/${email}/${props.mail.id}.json`,
+          `https://mail-box-client-database-default-rtdb.firebaseio.com/${email}/${props.mail.id}.json`,
           {
             method: "PUT",
             body: JSON.stringify({ ...props.mail, read: true }),
