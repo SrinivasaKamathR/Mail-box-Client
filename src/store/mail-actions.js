@@ -16,16 +16,18 @@ export const addMail = (mail, clearInput) => {
         }
       );
 
-      await fetch(
-        `https://mail-box-client-database-default-rtdb.firebaseio.com/${receiverEmail}.json`,
-        {
-          method: "POST",
-          body: JSON.stringify({ ...mail, read: false }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      if (senderEmail !== receiverEmail) {
+        await fetch(
+          `https://mail-box-client-database-default-rtdb.firebaseio.com/${receiverEmail}.json`,
+          {
+            method: "POST",
+            body: JSON.stringify({ ...mail, read: false }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
 
       const data = await response.json();
 
@@ -73,6 +75,32 @@ export const replaceMail = (emailUrl, loggedUserEmail) => {
             unreadMessageCount: unreadMessageCount,
           })
         );
+      } else {
+        throw data.error;
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+};
+//delete mail
+export const deleteMail = (mail) => {
+  const userEmail = JSON.parse(localStorage.getItem("idToken")).email;
+  const emailUrl = userEmail.replace("@", "").replace(".", "");
+
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `https://mail-box-client-database-default-rtdb.firebaseio.com/${emailUrl}/${mail.id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        dispatch(mailActions.remove(mail));
       } else {
         throw data.error;
       }
