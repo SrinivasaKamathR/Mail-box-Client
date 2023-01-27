@@ -6,6 +6,9 @@ import { showActions } from "../store/show-slice";
 
 const Sidebar = () => {
   const state = useSelector((state) => state.show);
+  const unreadMessageCount = useSelector(
+    (state) => state.mail.unreadMessageCount
+  );
   const dispatch = useDispatch();
 
   const composeHandler = () => {
@@ -25,14 +28,15 @@ const Sidebar = () => {
       <button className={classes.compose} onClick={composeHandler}>
         Compose
       </button>
-      <li onClick={sentHandler} className={state.sent ? classes.sent : ""}>
-        Sent
-      </li>
       <li
         onClick={receivedHandler}
         className={state.received ? classes.received : ""}
       >
-        Received
+        <span>Inbox</span>
+        <span>{unreadMessageCount > 0 ? unreadMessageCount : ""}</span>
+      </li>
+      <li onClick={sentHandler} className={state.sent ? classes.sent : ""}>
+        Sent
       </li>
     </div>
   );
